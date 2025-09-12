@@ -21,11 +21,62 @@ Save and Document Results Save your project by clicking File → Save Project. T
 Close the Simulation Once done, by going to Simulation → "Close Simulation
 
 Input/Output Signal Diagram:
+<img width="687" height="618" alt="image" src="https://github.com/user-attachments/assets/7de6ffd9-ac25-4adf-a075-c835cf11977f" />
+
 
 RTL Code:
 
+
+module seven_segment (
+    input [3:0] data_in,
+    output reg [6:0] segments_out
+    );
+
+    // segments_out maps to {g,f,e,d,c,b,a}
+    always @(*)
+    begin
+        case (data_in)
+            4'd0: segments_out = 7'b1000000; // 0
+            4'd1: segments_out = 7'b1111001; // 1
+            4'd2: segments_out = 7'b0100100; // 2
+            4'd3: segments_out = 7'b0110000; // 3
+            4'd4: segments_out = 7'b0011001; // 4
+            4'd5: segments_out = 7'b0010010; // 5
+            4'd6: segments_out = 7'b0000010; // 6
+            4'd7: segments_out = 7'b1111000; // 7
+            4'd8: segments_out = 7'b0000000; // 8
+            4'd9: segments_out = 7'b0010000; // 9
+            default: segments_out = 7'b1111111; // Off
+        endcase
+    end
+
+endmodule
 TestBench:
 
-Output waveform:
+module seven_segment_tb;
 
-Conclusion:
+    reg [3:0] tb_data_in;
+    wire [6:0] tb_segments_out;
+
+    seven_segment dut (
+        .data_in(tb_data_in),
+        .segments_out(tb_segments_out)
+    );
+
+    initial begin
+        tb_data_in = 4'd0;
+
+        repeat (16) begin
+            #10;
+            tb_data_in = tb_data_in + 1;
+        end
+
+        #20;
+        $finish;
+    end
+
+endmodule
+Output waveform:
+<img width="1511" height="798" alt="image" src="https://github.com/user-attachments/assets/f18b4ea9-f9b8-4113-a90c-c6421c700d38" />
+
+Conclusion: A BCD to seven-segment display decoder was successfully designed in Verilog HDL. The design was verified using a testbench that provided all possible 4-bit inputs. The simulation was performed in Vivado, and the output waveform confirmed that the correct 7-bit segment pattern was generated for each valid decimal input (0-9) and that the display was turned off for invalid inputs. The design is functionally correct and ready for implementation.
