@@ -23,9 +23,59 @@ Close the Simulation Once done, by going to Simulation → "Close Simulation
 Input/Output Signal Diagram:
 
 RTL Code:
+module seven_segment (
+    input [3:0] data_in,
+    output reg [6:0] segments_out
+    );
+
+    // segments_out maps to {g,f,e,d,c,b,a}
+    always @(*)
+    begin
+        case (data_in)
+            4'd0: segments_out = 7'b1000000; // 0
+            4'd1: segments_out = 7'b1111001; // 1
+            4'd2: segments_out = 7'b0100100; // 2
+            4'd3: segments_out = 7'b0110000; // 3
+            4'd4: segments_out = 7'b0011001; // 4
+            4'd5: segments_out = 7'b0010010; // 5
+            4'd6: segments_out = 7'b0000010; // 6
+            4'd7: segments_out = 7'b1111000; // 7
+            4'd8: segments_out = 7'b0000000; // 8
+            4'd9: segments_out = 7'b0010000; // 9
+            default: segments_out = 7'b1111111; // Off
+        endcase
+    end
+
+endmodule
 
 TestBench:
+module seven_segment_tb;
+
+    reg [3:0] tb_data_in;
+    wire [6:0] tb_segments_out;
+
+    seven_segment dut (
+        .data_in(tb_data_in),
+        .segments_out(tb_segments_out)
+    );
+
+    initial begin
+        tb_data_in = 4'd0;
+
+        // Loop to test all 16 possible inputs
+        repeat (16) begin
+            #10;
+            tb_data_in = tb_data_in + 1;
+        end
+
+        #20;
+        $finish;
+    end
+
+endmodule
 
 Output waveform:
+<img width="1673" height="876" alt="image" src="https://github.com/user-attachments/assets/a5c71b05-ea71-4a1d-bded-11de7316c50f" />
+
 
 Conclusion:
