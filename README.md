@@ -21,6 +21,7 @@ Save and Document Results Save your project by clicking File → Save Project. T
 Close the Simulation Once done, by going to Simulation → "Close Simulation
 
 Input/Output Signal Diagram:
+<img width="1006" height="904" alt="image" src="https://github.com/user-attachments/assets/867c4cb4-95b0-4758-96bc-670787762cd0" />
 
 RTL Code:
 module seven_segment (
